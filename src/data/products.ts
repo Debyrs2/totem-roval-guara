@@ -15,3 +15,8 @@ export const produtos: Product[] = [
     { id: 4, nome: "Melatonina Gotas", categoria: "sono", descricao: "Para noites de sono profundo e reparador.", imagem: "/assets/imagens/MascFemPote.png" },
     { id: 5, nome: "Polivitamínico", categoria: "nutricao", descricao: "Imunidade e disposição para o dia a dia.", imagem: "/assets/imagens/MascMasFit.png" }
 ];
+
+// Criamos um novo tipo que herda tudo de Product, mas adiciona a quantidade
+export interface CartItem extends Product {
+    quantidade: number;
+}

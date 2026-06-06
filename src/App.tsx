@@ -1,18 +1,37 @@
 // src/App.tsx
-import { useState } from 'react'; //"poder" de criar memória
+import { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
-import { ProductCard } from './components/CardProduct'; 
-import { produtos } from './data/products'; 
+import { ProductCard } from './components/CardProduct';
+import { CartModal } from './components/CartModal';
+import { produtos, type Product, type CartItem } from './data/products';
 import './index.css';
 
 function App() {
-  //'categoriaAtiva' é o valor atual, 'setCategoriaAtiva' é a função para mudar esse valor
   const [categoriaAtiva, setCategoriaAtiva] = useState('todos');
+  const [carrinho, setCarrinho] = useState<CartItem[]>([]);
 
-  // Lógica de Filtro: Se for 'todos', mostra tudo. Se não, filtra pela categoria.
-  const produtosFiltrados = categoriaAtiva === 'todos' 
-    ? produtos 
+  // Controla se o Modal está aberto ou não
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const produtosFiltrados = categoriaAtiva === 'todos'
+    ? produtos
     : produtos.filter(produto => produto.categoria === categoriaAtiva);
+
+  function adicionarAoCarrinho(produtoSelecionado: Product) {
+    setCarrinho((carrinhoAtual) => {
+      const itemJaExiste = carrinhoAtual.find(item => item.id === produtoSelecionado.id);
+      if (itemJaExiste) {
+        return carrinhoAtual.map(item =>
+          item.id === produtoSelecionado.id ? { ...item, quantidade: item.quantidade + 1 } : item
+        );
+      } else {
+        return [...carrinhoAtual, { ...produtoSelecionado, quantidade: 1 }];
+      }
+    });
+  }
+
+  // CALCULAR TOTAL DE ITENS 
+  const totalItensNoCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
 
   return (
     <div className="kiosk-container">
@@ -22,15 +41,30 @@ function App() {
       </header>
 
       <div className="kiosk-body">
-        {/* Passamos a memória e a função de mudar a memória para a Sidebar via Props */}
-        <Sidebar categoriaAtiva={categoriaAtiva} setCategoriaAtiva={setCategoriaAtiva} />
-        
+
+        <Sidebar
+          categoriaAtiva={categoriaAtiva}
+          setCategoriaAtiva={setCategoriaAtiva}
+          abrirCarrinho={() => setIsCartOpen(true)}
+          quantidadeItens={totalItensNoCarrinho}
+        />
+
         <main className="products-container">
-            {produtosFiltrados.map((produto) => (
-                <ProductCard key={produto.id} product={produto} />
-            ))}
+          {produtosFiltrados.map((produto) => (
+            <ProductCard
+              key={produto.id}
+              product={produto}
+              adicionarAoCarrinho={adicionarAoCarrinho}
+            />
+          ))}
         </main>
       </div>
+
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        carrinho={carrinho}
+      />
     </div>
   );
 }
