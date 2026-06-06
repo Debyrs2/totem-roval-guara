@@ -1,7 +1,7 @@
 // src/App.tsx
 import { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
-import { ProductCard } from './components/CardProduct';
+import { CardProduto } from './components/CardProduto';
 import { CartModal } from './components/CartModal';
 import { produtos, type Product, type CartItem } from './data/products';
 import './index.css';
@@ -9,8 +9,6 @@ import './index.css';
 function App() {
   const [categoriaAtiva, setCategoriaAtiva] = useState('todos');
   const [carrinho, setCarrinho] = useState<CartItem[]>([]);
-
-  // Controla se o Modal está aberto ou não
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const produtosFiltrados = categoriaAtiva === 'todos'
@@ -30,7 +28,15 @@ function App() {
     });
   }
 
-  // CALCULAR TOTAL DE ITENS 
+  //Remover ou diminuir quantidade
+  function removerDoCarrinho(produtoId: number) {
+    setCarrinho((carrinhoAtual) => {
+      return carrinhoAtual.map(item =>
+        item.id === produtoId ? { ...item, quantidade: item.quantidade - 1 } : item
+      ).filter(item => item.quantidade > 0); // O filter garante que itens com quantidade 0 sejam excluídos da lista
+    });
+  }
+
   const totalItensNoCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
 
   return (
@@ -41,7 +47,6 @@ function App() {
       </header>
 
       <div className="kiosk-body">
-
         <Sidebar
           categoriaAtiva={categoriaAtiva}
           setCategoriaAtiva={setCategoriaAtiva}
@@ -51,20 +56,22 @@ function App() {
 
         <main className="products-container">
           {produtosFiltrados.map((produto) => (
-            <ProductCard
+            <CardProduto
               key={produto.id}
               product={produto}
               adicionarAoCarrinho={adicionarAoCarrinho}
             />
           ))}
         </main>
-      </div>
 
-      <CartModal
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        carrinho={carrinho}
-      />
+        <CartModal
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          carrinho={carrinho}
+          removerDoCarrinho={removerDoCarrinho}
+        />
+      </div>
+      );
     </div>
   );
 }

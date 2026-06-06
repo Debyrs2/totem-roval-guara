@@ -1,5 +1,4 @@
-// Aqui nós ensinamos ao sistema o que compõe um Produto.
-// Se esquecermos de colocar o preço no futuro, o código nem compila!
+
 export interface Product {
     id: number;
     nome: string;
