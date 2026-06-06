@@ -1,8 +1,8 @@
-// src/App.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { CardProduto } from './components/CardProduto';
 import { CartModal } from './components/CartModal';
+import { TelaDescanso } from './components/TelaDescanso';
 import { produtos, type Product, type CartItem } from './data/products';
 import './index.css';
 
@@ -10,7 +10,48 @@ function App() {
   const [categoriaAtiva, setCategoriaAtiva] = useState('todos');
   const [carrinho, setCarrinho] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isIdle, setIsIdle] = useState(false);
 
+  // --- LÓGICA DE INATIVIDADE ---
+  useEffect(() => {
+    let tempoInativo: ReturnType<typeof setTimeout>;
+
+    function reiniciarTemporizador() {
+      clearTimeout(tempoInativo);
+
+      // Para testes agora, vamos usar 10 segundos (10000ms).
+      // Quando for para o shopping, mude para 3 * 60 * 1000 (3 minutos).
+      tempoInativo = setTimeout(() => {
+        setIsIdle(true); // Mostra o vídeo
+        setCarrinho([]); // Limpa o carrinho do cliente anterior
+        setCategoriaAtiva('todos'); // Volta para a categoria inicial
+        setIsCartOpen(false); // Fecha o modal se o cliente abandonou ele aberto
+      }, 10000);
+    }
+
+    // Fica escutando os toques/cliques na tela
+    window.addEventListener('mousemove', reiniciarTemporizador);
+    window.addEventListener('touchstart', reiniciarTemporizador);
+    window.addEventListener('click', reiniciarTemporizador);
+
+    // Dá o play no cronômetro assim que o sistema liga
+    reiniciarTemporizador();
+
+    // Clean Code: Limpa a memória se o componente for desmontado
+    return () => {
+      clearTimeout(tempoInativo);
+      window.removeEventListener('mousemove', reiniciarTemporizador);
+      window.removeEventListener('touchstart', reiniciarTemporizador);
+      window.removeEventListener('click', reiniciarTemporizador);
+    };
+  }, []); // O array vazio garante que os 'listeners' sejam adicionados só uma vez
+
+  // Função para a Tela de Descanso acordar o sistema
+  function acordarTotem() {
+    setIsIdle(false);
+  }
+
+  // --- LÓGICA DO CARRINHO 
   const produtosFiltrados = categoriaAtiva === 'todos'
     ? produtos
     : produtos.filter(produto => produto.categoria === categoriaAtiva);
@@ -28,12 +69,11 @@ function App() {
     });
   }
 
-  //Remover ou diminuir quantidade
   function removerDoCarrinho(produtoId: number) {
     setCarrinho((carrinhoAtual) => {
       return carrinhoAtual.map(item =>
         item.id === produtoId ? { ...item, quantidade: item.quantidade - 1 } : item
-      ).filter(item => item.quantidade > 0); // O filter garante que itens com quantidade 0 sejam excluídos da lista
+      ).filter(item => item.quantidade > 0);
     });
   }
 
@@ -41,6 +81,8 @@ function App() {
 
   return (
     <div className="kiosk-container">
+      <TelaDescanso isIdle={isIdle} onWakeUp={acordarTotem} />
+
       <header className="kiosk-header">
         <img src="/assets/imagens/rovalLogo.png" alt="Roval Farmácia de Manipulação" className="logo" />
         <h1>Encontre a fórmula ideal para você!</h1>
@@ -63,15 +105,14 @@ function App() {
             />
           ))}
         </main>
-
-        <CartModal
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          carrinho={carrinho}
-          removerDoCarrinho={removerDoCarrinho}
-        />
       </div>
-      );
+
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        carrinho={carrinho}
+        removerDoCarrinho={removerDoCarrinho}
+      />
     </div>
   );
 }
