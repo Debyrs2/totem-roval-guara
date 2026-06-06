@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db, popularBancoDeDados } from './data/db';
 import { Sidebar } from './components/Sidebar';
 import { CardProduto } from './components/CardProduto';
 import { CartModal } from './components/CartModal';
 import { TelaDescanso } from './components/TelaDescanso';
-import { produtos, type Product, type CartItem } from './data/products';
+import { type Product, type CartItem } from './data/products';
 import './index.css';
 
 function App() {
@@ -11,6 +13,26 @@ function App() {
   const [carrinho, setCarrinho] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
+
+  // Ao abrir o aplicativo, verifica se precisa popular o banco
+  useEffect(() => {
+    popularBancoDeDados();
+  }, []);
+
+  // Busca os produtos no banco. Ele refaz a busca toda vez que 'categoriaAtiva' mudar.
+  const produtosDoBanco = useLiveQuery(
+    () => {
+      if (categoriaAtiva === 'todos') {
+        return db.produtos.toArray(); // Traz tudo
+      } else {
+        return db.produtos.where('categoria').equals(categoriaAtiva).toArray(); // Traz filtrado
+      }
+    },
+    [categoriaAtiva] // Array de dependência: se isso mudar, a busca roda de novo
+  );
+
+  // O banco leva milissegundos para responder, garantimos que seja um array vazio se estiver carregando
+  const produtosFiltrados = produtosDoBanco || [];
 
   // --- LÓGICA DE INATIVIDADE ---
   useEffect(() => {
@@ -52,10 +74,6 @@ function App() {
   }
 
   // --- LÓGICA DO CARRINHO 
-  const produtosFiltrados = categoriaAtiva === 'todos'
-    ? produtos
-    : produtos.filter(produto => produto.categoria === categoriaAtiva);
-
   function adicionarAoCarrinho(produtoSelecionado: Product) {
     setCarrinho((carrinhoAtual) => {
       const itemJaExiste = carrinhoAtual.find(item => item.id === produtoSelecionado.id);
@@ -97,6 +115,10 @@ function App() {
         />
 
         <main className="products-container">
+          {produtosDoBanco === undefined && (
+            <h2 style={{ color: 'var(--text-muted)' }}>Carregando catálogo...</h2>
+          )}
+
           {produtosFiltrados.map((produto) => (
             <CardProduto
               key={produto.id}
