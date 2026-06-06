@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks'; 
-import { db, popularBancoDeDados } from './data/db'; 
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db, popularBancoDeDados } from './data/db';
 import { Sidebar } from './components/Sidebar';
-import { CardProduto } from './components/CardProduto'; 
-import { CartModal } from './components/CartModal'; 
-import { TelaDescanso } from './components/TelaDescanso'; 
+import { CardProduto } from './components/CardProduto';
+import { CartModal } from './components/CartModal';
+import { TelaDescanso } from './components/TelaDescanso';
 import { ModalProduto } from './components/ModalProduto';
-import { type Product, type CartItem } from './data/products'; 
+import { type Product, type CartItem } from './data/products';
 import './index.css';
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
         return db.produtos.where('categoria').equals(categoriaAtiva).toArray();
       }
     },
-    [categoriaAtiva] 
+    [categoriaAtiva]
   );
 
   const produtosFiltrados = produtosDoBanco || [];
@@ -40,11 +40,11 @@ function App() {
       clearTimeout(tempoInativo);
       tempoInativo = setTimeout(() => {
         setIsIdle(true);
-        setCarrinho([]); 
+        setCarrinho([]);
         setCategoriaAtiva('todos');
         setIsCartOpen(false);
-        setProdutoSelecionado(null); 
-      }, 10000); 
+        setProdutoSelecionado(null);
+      }, 10000);
     }
 
     window.addEventListener('mousemove', reiniciarTemporizador);
@@ -69,7 +69,7 @@ function App() {
     setCarrinho((carrinhoAtual) => {
       const itemJaExiste = carrinhoAtual.find(item => item.id === produtoSelecionado.id);
       if (itemJaExiste) {
-        return carrinhoAtual.map(item => 
+        return carrinhoAtual.map(item =>
           item.id === produtoSelecionado.id ? { ...item, quantidade: item.quantidade + 1 } : item
         );
       } else {
@@ -89,7 +89,11 @@ function App() {
   const totalItensNoCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
 
   return (
-    <div className="kiosk-container">
+    <div
+      className="kiosk-container"
+      onContextMenu={(e) => e.preventDefault()} // Impede o clique direito/pressionar e segurar
+      onDragStart={(e) => e.preventDefault()}   // bloqueio de arrasto a nível de script
+    >
       <TelaDescanso isIdle={isIdle} onWakeUp={acordarTotem} />
 
       <header className="kiosk-header">
@@ -98,39 +102,39 @@ function App() {
       </header>
 
       <div className="kiosk-body">
-        <Sidebar 
-            categoriaAtiva={categoriaAtiva} 
-            setCategoriaAtiva={setCategoriaAtiva} 
-            abrirCarrinho={() => setIsCartOpen(true)}
-            quantidadeItens={totalItensNoCarrinho}
+        <Sidebar
+          categoriaAtiva={categoriaAtiva}
+          setCategoriaAtiva={setCategoriaAtiva}
+          abrirCarrinho={() => setIsCartOpen(true)}
+          quantidadeItens={totalItensNoCarrinho}
         />
-        
-        <main className="products-container">
-            {produtosDoBanco === undefined && (
-                <h2 style={{ color: 'var(--text-muted)' }}>Carregando catálogo...</h2>
-            )}
 
-            {produtosFiltrados.map((produto) => (
-                <CardProduto 
-                  key={produto.id} 
-                  product={produto} 
-                  adicionarAoCarrinho={adicionarAoCarrinho} 
-                  abrirDetalhes={setProdutoSelecionado} 
-                />
-            ))}
+        <main className="products-container">
+          {produtosDoBanco === undefined && (
+            <h2 style={{ color: 'var(--text-muted)' }}>Carregando catálogo...</h2>
+          )}
+
+          {produtosFiltrados.map((produto) => (
+            <CardProduto
+              key={produto.id}
+              product={produto}
+              adicionarAoCarrinho={adicionarAoCarrinho}
+              abrirDetalhes={setProdutoSelecionado}
+            />
+          ))}
         </main>
       </div>
 
-      <CartModal 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
         carrinho={carrinho}
-        removerDoCarrinho={removerDoCarrinho} 
+        removerDoCarrinho={removerDoCarrinho}
       />
 
-      <ModalProduto 
+      <ModalProduto
         produto={produtoSelecionado}
-        isOpen={!!produtoSelecionado} 
+        isOpen={!!produtoSelecionado}
         onClose={() => setProdutoSelecionado(null)}
         adicionarAoCarrinho={adicionarAoCarrinho}
       />

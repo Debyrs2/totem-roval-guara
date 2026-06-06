@@ -9,14 +9,18 @@
     --border-color: #E9ECEF;
 }
 
-/* Reset básico para cara de aplicativo/totem */
+/* Reset para cara de aplicativo/totem */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     user-select: none;
-    /* Impede o cliente de ficar selecionando textos na tela touch */
+    /* Impede seleção de texto */
+    -webkit-user-drag: none;
+    /* Bloqueia arrastar imagens */
+    touch-action: pan-y;
+    /* bloqueia o zoom de duplo toque no Windows/Android */
 }
 
 body {
