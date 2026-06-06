@@ -1,20 +1,56 @@
-// src/components/Sidebar.tsx
-export function Sidebar() {
-  return (
-    <aside className="sidebar">
-      <h2>Categorias</h2>
-      <nav className="categories-menu">
-        {/* Deixei o "Todos" ativo por padrão por enquanto */}
-        <button className="category-btn active">Todos</button>
-        <button className="category-btn">Fitness</button>
-        <button className="category-btn">Nutrição</button>
-        <button className="category-btn">Estética</button>
-        <button className="category-btn">Sono & Bem-Estar</button>
-      </nav>
+// Interface para o TypeScript saber o que a Sidebar vai receber
+interface SidebarProps {
+    categoriaAtiva: string;
+    setCategoriaAtiva: (categoria: string) => void;
+}
 
-      <button className="consultant-call-btn">
-        Falar com Consultor(a)
-      </button>
-    </aside>
-  );
+//Avisar a função que ela vai receber essas props
+export function Sidebar({ categoriaAtiva, setCategoriaAtiva }: SidebarProps) {
+    return (
+        <aside className="sidebar">
+            <h2>Categorias</h2>
+            <nav className="categories-menu">
+
+                <button
+                    className={`category-btn ${categoriaAtiva === 'todos' ? 'active' : ''}`}
+                    onClick={() => setCategoriaAtiva('todos')}
+                >
+                    Todos
+                </button>
+
+                <button
+                    className={`category-btn ${categoriaAtiva === 'fitness' ? 'active' : ''}`}
+                    onClick={() => setCategoriaAtiva('fitness')}
+                >
+                    Fitness
+                </button>
+
+                <button
+                    className={`category-btn ${categoriaAtiva === 'nutricao' ? 'active' : ''}`}
+                    onClick={() => setCategoriaAtiva('nutricao')}
+                >
+                    Nutrição
+                </button>
+
+                <button
+                    className={`category-btn ${categoriaAtiva === 'estetica' ? 'active' : ''}`}
+                    onClick={() => setCategoriaAtiva('estetica')}
+                >
+                    Estética
+                </button>
+
+                <button
+                    className={`category-btn ${categoriaAtiva === 'sono' ? 'active' : ''}`}
+                    onClick={() => setCategoriaAtiva('sono')}
+                >
+                    Sono & Bem-Estar
+                </button>
+
+            </nav>
+
+            <button className="consultant-call-btn">
+                Falar com Consultor(a)
+            </button>
+        </aside>
+    );
 }
