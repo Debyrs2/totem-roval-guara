@@ -1,5 +1,3 @@
-// src/components/Sidebar.tsx
-
 interface SidebarProps {
     categoriaAtiva: string;
     setCategoriaAtiva: (categoria: string) => void;
