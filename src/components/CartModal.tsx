@@ -102,8 +102,8 @@ export function CartModal({ isOpen, onClose, carrinho, removerDoCarrinho }: Cart
                                             <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Quantidade: {item.quantidade}</span>
                                         </div>
                                         <button
+                                            className="remove-btn"
                                             onClick={() => handleRemoverClick(item)}
-                                            style={{ background: 'none', border: '1px solid var(--roval-red)', color: 'var(--roval-red)', padding: '5px 15px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
                                         >
                                             Remover
                                         </button>

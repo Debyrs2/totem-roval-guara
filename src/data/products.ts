@@ -62,9 +62,9 @@ export const produtos: Product[] = [
     },
     {
         "id": 7,
-        "nome": "Creme para Maos 60g Roval",
+        "nome": "Creme para Mãos 60g Roval",
         "categoria": "Cosméticos",
-        "descricao": "Creme hidratante formulado especificamente para o cuidado premium das maos. Serve para nutrir profundamente a pele, devolvendo a maciez e prevenindo o ressecamento severo. Sua textura de alta qualidade garante uma absorcao rápida, sem deixar aquela sensacao pegajosa. É o produto ideal para manter as maos sempre protegidas e com um toque aveludado o dia todo.",
+        "descricao": "Creme hidratante formulado especificamente para o cuidado premium das mãos. Serve para nutrir profundamente a pele, devolvendo a maciez e prevenindo o ressecamento severo. Sua textura de alta qualidade garante uma absorcao rápida, sem deixar aquela sensacao pegajosa. É o produto ideal para manter as mãos sempre protegidas e com um toque aveludado o dia todo.",
         "imagem": "/assets/produtos/Creme-para-Maos-60g-Roval.webp",
         "preco": 27.9
     },
@@ -160,7 +160,7 @@ export const produtos: Product[] = [
         "id": 19,
         "nome": "Sabonete Líquido Renaissance Figo Negro",
         "categoria": "Higienização",
-        "descricao": "Sabonete líquido luxuoso que acompanha a mesma linha aromática de figo negro. Serve para limpar a pele de forma extremamente delicada, sem causar nenhum tipo de ressecamento. Sua fórmula de alta qualidade proporciona uma espuma cremosa que deixa as maos profundamente hidratadas. Além de cuidar da pele, ele prolonga a experiência sensorial com uma perfumacao sofisticada e duradoura.",
+        "descricao": "Sabonete líquido luxuoso que acompanha a mesma linha aromática de figo negro. Serve para limpar a pele de forma extremamente delicada, sem causar nenhum tipo de ressecamento. Sua fórmula de alta qualidade proporciona uma espuma cremosa que deixa as mãos profundamente hidratadas. Além de cuidar da pele, ele prolonga a experiência sensorial com uma perfumacao sofisticada e duradoura.",
         "imagem": "/assets/produtos/Sabonete-Liquido-Renaissance-Figo-Negro-Roval.webp",
         "preco": 59.9
     },
@@ -214,17 +214,17 @@ export const produtos: Product[] = [
     },
     {
         "id": 26,
-        "nome": "Home Spray Renaissance Limao Siciliano",
+        "nome": "Home Spray Renaissance Limão Siciliano",
         "categoria": "Higienização",
-        "descricao": "Aromatizador de ambientes da linha Renaissance com notas de limao siciliano. Serve para transformar a atmosfera da sua casa, trazendo um frescor cítrico super elegante e revigorante. A qualidade premium da sua essência proporciona uma perfumacao sofisticada e com excelente fixacao no ar. É perfeito para criar um clima de limpeza, conforto e muito requinte em qualquer cômodo do seu lar.",
+        "descricao": "Aromatizador de ambientes da linha Renaissance com notas de limão siciliano. Serve para transformar a atmosfera da sua casa, trazendo um frescor cítrico super elegante e revigorante. A qualidade premium da sua essência proporciona uma perfumacao sofisticada e com excelente fixacao no ar. É perfeito para criar um clima de limpeza, conforto e muito requinte em qualquer cômodo do seu lar.",
         "imagem": "/assets/produtos/Home-Spray-Renaissance-Limao-Siciliano-Roval.webp",
         "preco": 69.9
     },
     {
         "id": 27,
-        "nome": "Sabonete Líquido Renaissance Limao Siciliano",
+        "nome": "Sabonete Líquido Renaissance Limão Siciliano",
         "categoria": "Higienização",
-        "descricao": "Sabonete líquido sofisticado que complementa a experiência aromática de limao siciliano. Serve para limpar as maos com extrema delicadeza enquanto entrega uma hidratacao rica e prolongada. Sua formulacao de altíssimo padrao cria uma espuma cremosa que deixa a pele aveludada e muito bem cuidada. Além da acao de assepsia, ele proporciona uma experiência sensorial única com sua fragrância cítrica marcante.",
+        "descricao": "Sabonete líquido sofisticado que complementa a experiência aromática de limão siciliano. Serve para limpar as mãos com extrema delicadeza enquanto entrega uma hidratacao rica e prolongada. Sua formulacao de altíssimo padrao cria uma espuma cremosa que deixa a pele aveludada e muito bem cuidada. Além da acao de assepsia, ele proporciona uma experiência sensorial única com sua fragrância cítrica marcante.",
         "imagem": "/assets/produtos/Sabonete-Liquido-Renaissance-Limao-Siciliano-Roval.webp",
         "preco": 59.9
     },
@@ -303,7 +303,7 @@ export const produtos: Product[] = [
     {
         "id": 37,
         "nome": "Slim Blend Sabor Hortela 210g Roval",
-        "categoria": "Nutrição ",
+        "categoria": "Nutrição",
         "descricao": "Chá misto solúvel sabor hortela formulado com sete extratos naturais. Serve como uma bebida leve que auxilia no seu bem-estar diário e na manutencao de um estilo de vida saudável. A sua composicao é adocada naturalmente, totalmente livre de glúten e nao possui corantes artificiais. A lata vem com 210g do pó já pronto para o consumo, bastando misturar na água para um preparo rápido e prático.",
         "imagem": "/assets/produtos/Slim-Blend-Sabor-Hortela-210g-Roval.webp",
         "preco": 94.9

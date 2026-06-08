@@ -1,27 +1,74 @@
 interface SidebarProps {
-    categoriaAtiva: string;
-    setCategoriaAtiva: (categoria: string) => void;
-    abrirCarrinho: () => void;
-    quantidadeItens: number;   
+  categoriaAtiva: string;
+  setCategoriaAtiva: (categoria: string) => void;
+  abrirCarrinho: () => void;
+  quantidadeItens: number;
 }
 
 export function Sidebar({ categoriaAtiva, setCategoriaAtiva, abrirCarrinho, quantidadeItens }: SidebarProps) {
-    return (
-      <aside className="sidebar">
-        <h2>Categorias</h2>
-        <nav className="categories-menu">
-            
-            <button className={`category-btn ${categoriaAtiva === 'todos' ? 'active' : ''}`} onClick={() => setCategoriaAtiva('todos')}>Todos</button>
-            <button className={`category-btn ${categoriaAtiva === 'fitness' ? 'active' : ''}`} onClick={() => setCategoriaAtiva('fitness')}>Fitness</button>
-            <button className={`category-btn ${categoriaAtiva === 'nutricao' ? 'active' : ''}`} onClick={() => setCategoriaAtiva('nutricao')}>Nutrição</button>
-            <button className={`category-btn ${categoriaAtiva === 'estetica' ? 'active' : ''}`} onClick={() => setCategoriaAtiva('estetica')}>Estética</button>
-            <button className={`category-btn ${categoriaAtiva === 'sono' ? 'active' : ''}`} onClick={() => setCategoriaAtiva('sono')}>Sono & Bem-Estar</button>
+  // Estas devem ser exatamente as mesmas palavras usadas na sua planilha (JSON)
+  const categorias = [
+    { id: 'todos', nome: 'Todos os Produtos' },
+    { id: 'Cosméticos', nome: 'Cosméticos' },
+    { id: 'Higienização', nome: 'Higienização' },
+    { id: 'Nutrição', nome: 'Nutrição' },
+    { id: 'Nutrição Esportiva', nome: 'Nutrição Esportiva' },
+    { id: 'Produtos Capilares', nome: 'Produtos Capilares' },
+    { id: 'Sono & Bem Estar', nome: 'Sono & Bem Estar' }
+  ];
 
-        </nav>
-  
-        <button className="consultant-call-btn" onClick={abrirCarrinho}>
-          Ver Carrinho ({quantidadeItens})
+  return (
+    <aside className="sidebar">
+      <h2 style={{ marginBottom: '1.5rem', color: 'var(--roval-dark-red)' }}>Categorias</h2>
+
+      <nav className="category-nav">
+        {categorias.map(cat => (
+          <button
+            key={cat.id}
+            className={`category-btn ${categoriaAtiva === cat.id ? 'active' : ''}`}
+            onClick={() => setCategoriaAtiva(cat.id)}
+          >
+            {cat.nome}
+          </button>
+        ))}
+      </nav>
+
+      <div className="cart-container">
+        <button
+          className="cart-btn"
+          onClick={abrirCarrinho}
+          style={{
+            width: '100%',
+            padding: '1rem',
+            backgroundColor: 'var(--roval-red)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '12px',
+            fontWeight: 'bold',
+            fontSize: '1.1rem',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            boxShadow: '0 4px 15px rgba(200, 16, 46, 0.2)',
+            transition: 'transform 0.1s ease, background-color 0.2s ease'
+          }}
+          onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+          onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <span>🛒 Carrinho</span>
+          <span style={{
+            background: 'white',
+            color: 'var(--roval-red)',
+            padding: '2px 8px',
+            borderRadius: '50%',
+            fontSize: '0.9rem'
+          }}>
+            {quantidadeItens}
+          </span>
         </button>
-      </aside>
-    );
+      </div>
+    </aside>
+  );
 }
