@@ -39,7 +39,7 @@ export function Sidebar({ categoriaAtiva, setCategoriaAtiva, abrirCarrinho, quan
           onClick={abrirCarrinho}
           style={{
             width: '100%',
-            padding: '1rem',
+            padding: '1.2rem',
             backgroundColor: 'var(--roval-red)',
             color: 'white',
             border: 'none',
@@ -50,12 +50,8 @@ export function Sidebar({ categoriaAtiva, setCategoriaAtiva, abrirCarrinho, quan
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            boxShadow: '0 4px 15px rgba(200, 16, 46, 0.2)',
-            transition: 'transform 0.1s ease, background-color 0.2s ease'
+            boxShadow: '0 4px 15px rgba(200, 16, 46, 0.2)'
           }}
-          onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
-          onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
         >
           <span>🛒 Carrinho</span>
           <span style={{

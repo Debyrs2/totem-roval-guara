@@ -6,6 +6,7 @@ import { CardProduto } from './components/CardProduto';
 import { CartModal } from './components/CartModal';
 import { TelaDescanso } from './components/TelaDescanso';
 import { ModalProduto } from './components/ModalProduto';
+import { MascoteAjuda } from './components/MascoteAjuda';
 import { type Product, type CartItem } from './data/products';
 import './index.css';
 
@@ -44,7 +45,7 @@ function App() {
         setCategoriaAtiva('todos');
         setIsCartOpen(false);
         setProdutoSelecionado(null);
-      }, 10000);
+      }, 120000);
     }
 
     window.addEventListener('mousemove', reiniciarTemporizador);
@@ -91,8 +92,8 @@ function App() {
   return (
     <div
       className="kiosk-container"
-      onContextMenu={(e) => e.preventDefault()} // Impede o clique direito/pressionar e segurar
-      onDragStart={(e) => e.preventDefault()}   // bloqueio de arrasto a nível de script
+      onContextMenu={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
     >
       <TelaDescanso isIdle={isIdle} onWakeUp={acordarTotem} />
 
@@ -130,6 +131,7 @@ function App() {
         onClose={() => setIsCartOpen(false)}
         carrinho={carrinho}
         removerDoCarrinho={removerDoCarrinho}
+        adicionarAoCarrinho={adicionarAoCarrinho}
       />
 
       <ModalProduto
@@ -138,6 +140,8 @@ function App() {
         onClose={() => setProdutoSelecionado(null)}
         adicionarAoCarrinho={adicionarAoCarrinho}
       />
+
+      {!isIdle && <MascoteAjuda />}
     </div>
   );
 }

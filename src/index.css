@@ -1,21 +1,19 @@
-/* Definição de Variáveis de Cores (Identidade Roval) */
 :root {
     --roval-red: #C8102E;
     --roval-dark-red: #9A0B20;
     --roval-white: #FFFFFF;
     --bg-light: #F8F9FA;
-    --text-dark: #212529;
-    --text-muted: #6C757D;
-    --border-color: rgba(233, 236, 239, 0.6);
+    --text-dark: #111111;
+    /* Mais escuro para melhor legibilidade */
+    --text-muted: #555555;
+    --border-color: rgba(233, 236, 239, 0.8);
 
-    /* Novas variáveis para o 3D/Glass */
-    --glass-bg: rgba(255, 255, 255, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.4);
-    --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-    --shadow-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.3);
+    /* Glassmorphism BRANCO, CLARO e LIMPO */
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Reset para cara de aplicativo/totem */
 * {
     margin: 0;
     padding: 0;
@@ -25,37 +23,30 @@
     -webkit-user-drag: none;
     touch-action: pan-y;
     -webkit-tap-highlight-color: transparent;
-    /* Remove aquele quadrado azul nativo ao tocar na tela */
 }
 
 body {
-    /* Criando um gradiente suave de fundo para destacar o "vidro" */
     background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     color: var(--text-dark);
     overflow: hidden;
 }
 
-/* Container do Modo Quiosque */
 .kiosk-container {
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    /* Impede que o app inteiro crie barra de rolagem na lateral ou fundo */
-    position: relative;
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
 }
 
 .kiosk-header {
     width: 100%;
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--border-color);
     padding: 1rem 2rem;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 2rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
     z-index: 20;
@@ -63,14 +54,12 @@ body {
 
 .kiosk-header .logo {
     height: 50px;
-    /* Altura fixa para o logo não distorcer */
     object-fit: contain;
 }
 
 .kiosk-header h1 {
-    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-    /* Fonte inteligente: aumenta e diminui conforme a tela */
-    color: var(--text-dark);
+    font-size: 1.6rem;
+    color: var(--roval-dark-red);
     font-weight: 600;
 }
 
@@ -78,541 +67,474 @@ body {
     width: 100%;
     flex: 1;
     display: flex;
-    flex-direction: row;
+    flex-direction: row !important;
     overflow: hidden;
 }
 
-/* Menu Lateral */
+/* SIDEBAR RIGOROSA */
 .sidebar {
     width: 280px;
+    min-width: 280px;
     height: 100%;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid var(--glass-border);
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.03);
+    border-right: 1px solid var(--border-color);
     padding: 2rem 1.5rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
     z-index: 10;
-    flex-shrink: 0;
-    /* Impede a sidebar de ser esmagada se a tela encolher */
 }
 
-.sidebar h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-dark);
-    border-left: 4px solid var(--roval-red);
-    padding-left: 10px;
-}
-
-.categories-menu {
+.category-nav {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow-y: auto;
-    max-height: 55vh;
-    padding-right: 8px;
+    flex-direction: column !important;
+    gap: 0.8rem;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    flex: 1;
+    padding-right: 5px;
+    width: 100%;
 }
 
-/* Botões de Categorias */
+.category-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.category-nav {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .category-btn {
-    background: var(--bg-light);
-    border: 2px solid transparent;
-    color: var(--text-dark);
-    padding: 1.2rem;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 1rem;
     font-size: 1.1rem;
+    color: var(--text-muted);
     font-weight: 600;
     border-radius: 12px;
     cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease-in-out;
-}
-
-.category-btn:hover {
-    background-color: #E2E6EA;
+    transition: all 0.2s;
+    display: block;
+    white-space: normal;
 }
 
 .category-btn.active {
     background-color: var(--roval-white);
     color: var(--roval-red);
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-soft);
     border-left: 4px solid var(--roval-red);
-    transform: translateX(5px);
-    /* Dá um leve salto para a direita, indicando seleção */
 }
 
-/* Botão de Chamada da Consultora */
-.consultant-call-btn {
-    background-color: #25D366;
-    color: var(--roval-white);
-    border: none;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
-    transition: all 0.2s;
-    width: auto;
-    align-self: center;
-    margin-top: 1.5rem;
+.cart-container {
+    margin-top: auto;
+    padding-top: 1.5rem;
 }
 
-.consultant-call-btn:active {
-    transform: scale(0.98);
-}
-
-/* Área Grid de Produtos */
+/* VITRINE PADRONIZADA - Fim dos cards esticados */
 .products-container {
     flex: 1;
     padding: 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    /* Usa colunas fixas de 240px e alinha ao começo, impedindo que o grid estique os itens se forem poucos */
+    grid-template-columns: repeat(auto-fill, 240px);
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 1.5rem;
     overflow-y: auto;
-    padding-bottom: 5rem;
-    /* Quanto menor o número, mais agressivo é o efeito de perspectiva */
-    perspective: 1500px;
+    height: 100%;
 }
 
-/* Ao tocar, o cartão "afunda" fisicamente */
+.products-container::-webkit-scrollbar {
+    display: none;
+}
+
 .product-card {
+    width: 240px;
+    /* Trava a largura do card */
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
     box-shadow: var(--shadow-soft);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* Transição ultra-rápida e limpa */
-    transition: background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    cursor: pointer;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
-    transform: translateZ(0);
-    /* Aciona a Placa de Vídeo (Hardware Acceleration) */
-    will-change: transform;
-}
-
-/*  cartão "afunda" fisicamente ao ser tocado */
-.product-card:active {
-    background: rgb(235, 235, 235);
-    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.05);
-    border-color: rgba(200, 16, 46, 0.3);
 }
 
 .product-img {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     object-fit: contain;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.08));
-    transition: transform 0.15s ease-out;
 }
 
-/* A imagem acompanha levemente o afundamento do cartão, sem perder qualidade */
-.product-card:active .product-img {
-    transform: scale(0.92);
-}
-
-.product-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+.product-title {
+    font-size: 1rem;
     color: var(--roval-dark-red);
     font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    min-height: 38px;
+    /* Mantém os botões alinhados mesmo que o título tenha 2 linhas */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Container de botões flex para compra rápida e detalhes */
-.product-card>div[style*="flex"] {
-    transform: translateZ(25px);
-    /* Faz os botões flutuarem levemente */
+.product-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--roval-red);
+    margin-bottom: 1rem;
 }
 
-.product-card p {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-    line-height: 1.4;
-}
-
-/* Usamos o seletor de título para pegar o botão do carrinho sem precisar mexer no TSX */
-button[title="Adicionar direto ao carrinho"] {
-    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease !important;
-}
-
-/* Quando o cliente toca no carrinho, ele dá um "pulo" rápido e escurece a cor */
-button[title="Adicionar direto ao carrinho"]:active {
-    transform: scale(0.85) !important;
-    background-color: var(--roval-dark-red) !important;
+.card-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin-top: auto;
 }
 
 .view-more-btn {
+    flex: 1;
     background-color: var(--roval-white);
     color: var(--roval-red);
-    border: 2px solid var(--roval-red);
-    padding: 0.8rem 1rem;
-    border-radius: 12px;
+    border: 1px solid var(--roval-red);
+    padding: 0.6rem;
+    border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(200, 16, 46, 0.1);
+    font-size: 0.9rem;
 }
 
-/* Feedback tátil no botão */
-.view-more-btn:active {
+.add-cart-btn {
     background-color: var(--roval-red);
     color: var(--roval-white);
-    transform: translateY(2px);
-    box-shadow: 0 2px 3px rgba(200, 16, 46, 0.1);
+    border: none;
+    border-radius: 8px;
+    padding: 0 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.view-more-btn:hover {
-    background-color: var(--roval-red);
-    color: var(--roval-white);
-}
-
-/* ESTILOS DO MODAL*/
+/* MODAIS - Brancos e com área de Scroll definida */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none;
+    /* Apenas o fundo é escuro, o modal é branco */
+    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-}
-
-.modal-overlay.active {
-    display: flex;
+    z-index: 9000;
 }
 
 .modal-content {
-    background-color: var(--roval-white);
-    padding: 3rem;
+    background: #FFFFFF;
+    /* Branco puro e limpo */
     border-radius: 20px;
-    text-align: center;
-    position: relative;
-    max-width: 400px;
     width: 90%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 550px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    /* O conteúdo interno que deve rolar, não o modal inteiro */
 }
 
-.close-modal {
+/* Essa é a área que rola no celular, salvando os botões */
+.modal-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-scroll-area::-webkit-scrollbar {
+    display: none;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--border-color);
+    background: #FFFFFF;
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+    /* Impede os botões de serem esmagados */
+}
+
+.close-modal-x {
     position: absolute;
     top: 15px;
     right: 20px;
-    font-size: 2rem;
+    font-size: 2.8rem;
     background: none;
     border: none;
-    color: var(--text-muted);
+    color: var(--roval-dark-red);
     cursor: pointer;
+    z-index: 10;
+    line-height: 0.8;
+    transition: transform 0.1s ease;
 }
 
-.consultora-img {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-    margin: 1.5rem 0;
-}
+/* RESPONSIVIDADE TOTAL PARA CELULAR E TELAS PEQUENAS */
+@media (max-width: 800px) {
+    .kiosk-header {
+        justify-content: center;
+        padding: 1rem;
+    }
 
-#qrcode-container img {
-    margin-top: 1rem;
-    border-radius: 10px;
-}
-
-/* Customização da barra de rolagem das categorias */
-.categories-menu::-webkit-scrollbar {
-    width: 6px;
-}
-
-.categories-menu::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: 10px;
-}
-
-.categories-menu::-webkit-scrollbar-thumb:hover {
-    background-color: var(--roval-red);
-}
-
-/* --- ESTILOS DO MODAL DE DETALHES DO PRODUTO --- */
-.product-detail-modal {
-    max-width: 500px;
-    /* Um pouco mais largo para acomodar o informativo */
-}
-
-.product-detail-img {
-    width: 220px;
-    height: 220px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-}
-
-.product-divider {
-    height: 3px;
-    background-color: var(--roval-red);
-    width: 60px;
-    margin: 1.2rem auto;
-    border-radius: 2px;
-}
-
-.product-detail-modal p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-dark);
-    margin-bottom: 2rem;
-    text-align: justify;
-}
-
-/* REGRAS DE RESPONSIVIDADE */
-@media (max-width: 900px) {
-    .kiosk-body {
-        flex-direction: row;
+    .kiosk-header h1 {
+        display: none;
     }
 
     .sidebar {
-        width: 280px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-right: 1px solid var(--glass-border);
-        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
-        padding: 2rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-        z-index: 10;
-    }
-
-    .categories-menu {
-        flex-direction: column;
-        overflow-y: auto;
+        width: 200px;
+        min-width: 200px;
+        padding: 1rem;
     }
 
     .category-btn {
-        background: transparent;
-        border: none;
-        text-align: left;
-        padding: 1rem;
-        font-size: 1.1rem;
-        cursor: pointer;
-        border-radius: 12px;
-        margin-bottom: 0.5rem;
-        color: var(--text-muted);
-        font-weight: 500;
-        transition: all 0.2s ease;
-    }
-
-    .consultant-call-btn {
-        padding: 0.8rem 1rem;
         font-size: 0.95rem;
+        padding: 0.8rem;
     }
 
     .products-container {
-        padding: 1.5rem;
-        gap: 1.5rem;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        /* Cards de produtos menores */
+        grid-template-columns: repeat(auto-fill, 160px);
+        /* Cards menores lado a lado */
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .product-card {
+        width: 160px;
+        padding: 1rem;
     }
 
     .product-img {
-        width: 120px;
-        height: 120px;
+        width: 90px;
+        height: 90px;
+    }
+
+    .product-title {
+        font-size: 0.85rem;
+        min-height: 32px;
+    }
+
+    .product-price {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .add-cart-btn {
+        padding: 0.6rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-width: 400px;
+    }
+
+    .modal-scroll-area {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        flex-direction: column-reverse;
     }
 }
 
-/* ESTILOS DO AVISO DO MASCOTE */
-.mascote-aviso {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-end;
-    gap: 10px;
-    z-index: 900;
-    animation: flutuar 3s ease-in-out infinite;
+/*FEEDBACK TÁTIL (Pulsar ao Tocar)*/
+.view-more-btn, 
+.add-cart-btn, 
+.cart-btn, 
+.close-modal-x {
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), filter 0.2s ease !important;
 }
 
-.mascote-img-aviso {
-    width: 110px;
-    height: auto;
-}
-
-.balao-fala {
-    background: var(--roval-red);
-    color: var(--roval-white);
-    padding: 15px 20px;
-    border-radius: 20px 20px 0 20px;
-    font-weight: 600;
-    font-size: 1rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    max-width: 220px;
-    line-height: 1.3;
-}
-
-.fechar-aviso {
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: auto;
-    background: var(--roval-white);
-    color: var(--roval-red);
-    border: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.remove-btn {
-    background: transparent;
-    border: 1px solid var(--roval-red);
-    color: var(--roval-red);
-    padding: 5px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
-}
-
-/* O feedback de toque: preenche com a cor e dá o "clique" tátil */
-.remove-btn:active {
-    background-color: var(--roval-red);
-    color: var(--roval-white);
-    transform: translateY(2px);
-}
-
-/* --- COMPORTAMENTO PADRÃO DA SIDEBAR (TELAS DEITADAS/GRANDES) --- */
-.category-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    overflow-y: auto;
-    /* Se houver muitas categorias no futuro, rola apenas dentro do menu */
-}
-
-.cart-container {
-    margin-top: auto;
-    /* Empurra o botão do carrinho sempre para o final da tela */
-    padding-top: 2rem;
+/* Quando o usuário encosta o dedo, o botão dá uma leve afundada */
+.view-more-btn:active, 
+.add-cart-btn:active, 
+.cart-btn:active, 
+.close-modal-x:active {
+    transform: scale(0.92) !important;
+    filter: brightness(0.9);
 }
 
 /* --- RESPONSIVIDADE: TELAS EM PÉ (PORTRAIT) OU TABLETS/CELULARES --- */
 @media (max-width: 1024px),
 (orientation: portrait) {
-    .kiosk-header {
-        padding: 1rem;
-        gap: 1.5rem;
-        justify-content: center;
-        /* Isso junta a logo e o texto no meio exato da tela */
-    }
 
-    .kiosk-header h1 {
-        font-size: 1.4rem;
-        /* Um tamanho legal e legível */
-        text-align: center;
-    }
-
-    .kiosk-body {
+    .modal-content,
+    .modal-detail-wrapper {
         flex-direction: column;
-        /* Menu vai para o topo, vitrine vai para baixo */
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        /* Deixa de ocupar a altura toda */
-        flex-direction: row;
-        /* Itens ficam lado a lado horizontalmente */
+        /* Empilha verticalmente: imagem no topo, texto abaixo */
+        gap: 1.5rem;
+        padding: 1.8rem;
         align-items: center;
-        justify-content: space-between;
-        padding: 0.8rem 1rem;
-        border-right: none;
-        border-bottom: 1px solid var(--glass-border);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
 
-    .sidebar h2 {
-        display: none;
-        /* Esconde o título "Categorias" para salvar espaço */
+    .modal-detail-img {
+        max-width: 200px;
+        /* Reduz o tamanho da imagem para preservar espaço de leitura */
+        margin: 0 auto;
     }
 
-    /* Transforma o menu vertical em um carrossel horizontal de deslizar com o dedo */
-    .category-nav {
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 0.8rem;
-        padding: 0.2rem 0;
-        flex: 1;
-        -webkit-overflow-scrolling: touch;
+    .modal-detail-info {
+        width: 100%;
+        text-align: center;
+        align-items: center;
     }
 
-    .category-btn {
-        white-space: nowrap;
-        /* Impede que o texto dos botões quebre linha */
-        margin-bottom: 0;
-        padding: 0.6rem 1.2rem;
+    .modal-detail-info h2 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+    }
+
+    .modal-detail-info p {
         font-size: 0.95rem;
-        border-radius: 20px;
+        text-align: justify;
+        /* Alinhamento limpo para descrições detalhadas */
+        line-height: 1.5;
+        max-height: 20vh;
+        /* Limita a descrição longa para não empurrar os botões */
+        overflow-y: auto;
+        /* Rolagem sutil apenas no texto se necessário */
+        padding-right: 5px;
     }
 
-    .category-btn.active {
-        border-left: none;
-        border-bottom: 3px solid var(--roval-red);
-        /* Traço de seleção vai para baixo do botão */
-        transform: translateY(-2px);
+    /* Ajuste dos botões de ação do modal na vertical */
+    .modal-actions {
+        width: 100%;
+        flex-direction: column-reverse;
+        /* Coloca o botão principal em destaque */
+        gap: 0.8rem;
     }
 
-    .cart-container {
-        margin-top: 0;
-        padding-top: 0;
-        margin-left: 1rem;
+    .modal-actions button {
+        width: 100% !important;
+        padding: 1rem !important;
     }
+}
 
-    .cart-btn {
-        padding: 0.7rem 1rem !important;
-        font-size: 1rem !important;
-        border-radius: 20px !important;
-    }
+.kiosk-header {
+    padding: 1rem;
+    gap: 1.5rem;
+    justify-content: center;
+    /* Isso junta a logo e o texto no meio exato da tela */
+}
 
-    /* Ajusta os cards na tela vertical para que caibam mais produtos lado a lado */
-    .products-container {
-        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-        gap: 1.2rem;
-        padding: 1.2rem;
-    }
+.kiosk-header h1 {
+    font-size: 1.4rem;
+    /* Um tamanho legal e legível */
+    text-align: center;
+}
 
-    .product-card {
-        padding: 1.2rem 1rem;
-    }
+.kiosk-body {
+    flex-direction: column;
+    /* Menu vai para o topo, vitrine vai para baixo */
+}
 
-    .product-img {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 0.8rem;
-    }
+.sidebar {
+    width: 230px;
+    min-width: 230px;
+    padding: 1.5rem 1rem;
+}
+
+.sidebar h2 {
+    display: none;
+    /* Esconde o título "Categorias" para salvar espaço */
+}
+
+/* Transforma o menu vertical em um carrossel horizontal de deslizar com o dedo */
+.category-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.8rem;
+    padding: 0.2rem 0;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+.category-btn {
+    width: 100%;
+    text-align: left;
+    /* Alinha o texto das categorias à esquerda como na imagem */
+    padding: 1rem;
+    white-space: normal;
+    /* Permite quebrar linha se o nome for grande */
+    display: block;
+}
+
+.category-btn.active {
+    border-left: none;
+    border-bottom: 3px solid var(--roval-red);
+    /* Traço de seleção vai para baixo do botão */
+    transform: translateY(-2px);
+}
+
+.cart-container {
+    margin-top: 0;
+    padding-top: 0;
+    margin-left: 1rem;
+}
+
+.cart-btn {
+    padding: 0.7rem 1rem !important;
+    font-size: 1rem !important;
+    border-radius: 20px !important;
+}
+
+/* Ajusta os cards na tela vertical para que caibam mais produtos lado a lado */
+.products-container {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1.2rem;
+    padding: 1.2rem;
+}
+
+.product-card {
+    padding: 1.2rem 1rem;
+}
+
+.product-img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 0.8rem;
 }
 
 /* Esconder as barras de rolagem feias para dar cara de aplicativo nativo no touch */
 .products-container::-webkit-scrollbar,
 .category-nav::-webkit-scrollbar,
+.products-container::-webkit-scrollbar {
+    display: none;
+}
+
+.category-nav,
+.products-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .modal-content::-webkit-scrollbar {
     display: none;
 }
@@ -625,13 +547,24 @@ button[title="Adicionar direto ao carrinho"]:active {
 }
 
 @media (max-width: 600px) {
-    .kiosk-header h1 {
-        display: none;
-        /* Aqui sim, a frase some para não esmagar a logo */
+    .products-container {
+        grid-template-columns: repeat(auto-fill, 160px);
+        /* Cards menores lado a lado */
+        gap: 1rem;
+        padding: 1rem;
     }
 
-    .kiosk-header {
-        justify-content: center;
-        /* Centraliza a logo da Roval */
+    .product-card {
+        padding: 1rem;
+    }
+
+    .product-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
     }
 }

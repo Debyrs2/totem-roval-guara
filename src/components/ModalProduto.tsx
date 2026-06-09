@@ -10,33 +10,49 @@ interface ModalProdutoProps {
 export function ModalProduto({ produto, isOpen, onClose, adicionarAoCarrinho }: ModalProdutoProps) {
     if (!isOpen || !produto) return null;
 
-    const produtoAtual = produto as Product;
-
     function handleAdicionar() {
-        adicionarAoCarrinho(produtoAtual);
+        adicionarAoCarrinho(produto as Product);
         onClose();
     }
 
     return (
-        <div className="modal-overlay active" style={{ zIndex: 1000 }}>
-            <div className="modal-content product-detail-modal">
-                <button className="close-modal" onClick={onClose}>&times;</button>
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <button className="close-modal-x" onClick={onClose}>&times;</button>
 
-                <img src={produto.imagem} alt={produto.nome} className="product-detail-img" />
-                <h2 style={{ color: 'var(--roval-red)' }}>{produto.nome}</h2>
+                {/* ÁREA DE SCROLL (Protege a interface no Celular) */}
+                <div className="modal-scroll-area">
+                    <img
+                        src={produto.imagem}
+                        alt={produto.nome}
+                        style={{ width: '160px', height: '160px', objectFit: 'contain', marginBottom: '1rem' }}
+                    />
 
-                <div className="product-divider"></div>
+                    <h2 style={{ color: 'var(--roval-red)', textAlign: 'center', fontSize: '1.4rem' }}>
+                        {produto.nome}
+                    </h2>
 
-                <p style={{ textAlign: 'center', fontSize: '1.1rem', marginBottom: '2rem', color: 'var(--text-dark)' }}>
-                    {produto.descricao}
-                </p>
+                    <h3 style={{ color: 'var(--text-dark)', fontSize: '1.3rem', fontWeight: 'bold', margin: '0.5rem 0' }}>
+                        R$ {produto.preco.toFixed(2).replace('.', ',')}
+                    </h3>
 
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                    <button
-                        className="view-more-btn"
-                        onClick={onClose}
-                        style={{ flex: 1 }}
-                    >
+                    <div style={{ height: '3px', background: 'var(--roval-red)', width: '50px', margin: '1rem 0' }}></div>
+
+                    {/* TEXTO: Mais escuro, fonte menor e justificado */}
+                    <p style={{
+                        textAlign: 'justify',
+                        fontSize: '0.95rem',
+                        color: '#222222',
+                        lineHeight: '1.5',
+                        width: '100%'
+                    }}>
+                        {produto.descricao}
+                    </p>
+                </div>
+
+                {/* RODAPÉ FIXO (Os botões nunca somem da tela) */}
+                <div className="modal-footer">
+                    <button className="view-more-btn" onClick={onClose} style={{ flex: 1, padding: '1rem' }}>
                         Voltar
                     </button>
 
@@ -45,10 +61,10 @@ export function ModalProduto({ produto, isOpen, onClose, adicionarAoCarrinho }: 
                         style={{
                             flex: 1,
                             backgroundColor: 'var(--roval-red)',
-                            color: 'var(--roval-white)',
+                            color: 'white',
                             border: 'none',
-                            borderRadius: '10px',
-                            padding: '0.8rem 1.5rem',
+                            borderRadius: '8px',
+                            padding: '1rem',
                             fontWeight: 'bold',
                             cursor: 'pointer'
                         }}
